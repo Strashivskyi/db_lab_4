@@ -9,9 +9,12 @@ import java.util.List;
 public class TicketController implements AbstractGenericController<Ticket> {
     TicketDaoImpl dao = new TicketDaoImpl();
 
+    public TicketController() throws SQLException {
+    }
+
     @Override
     public List<Ticket> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Ticket>) dao.findAll();
     }
 
     @Override

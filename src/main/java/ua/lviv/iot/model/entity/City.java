@@ -1,19 +1,42 @@
 package ua.lviv.iot.model.entity;
 
-public class City {
-    private int id;
-    private int regionId;
-    private String name;
+import javax.persistence.*;
+import java.util.Set;
 
-    public City(int id, int regionId, String name) {
+@Table(name = "city")
+@Entity
+public class City {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "name")
+    private String name;
+    @ManyToOne
+    @JoinColumn(name = "region_id", referencedColumnName = "id", nullable = false)
+    private Region region;
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
+    private Set<AmusementPark> amusementParks;
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
+    private Set<Client> clients;
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
+    private Set<Employee> employees;
+
+    public City(int id, String name, Region region, Set<AmusementPark> amusementParks, Set<Client> clients, Set<Employee> employees) {
         this.id = id;
-        this.regionId = regionId;
-        this.name = name;
+
+        this.amusementParks = amusementParks;
+        this.clients = clients;
+        this.employees = employees;
     }
 
-    public City(int regionId, String name) {
-        this.regionId = regionId;
+    public City() {
+
+    }
+
+    public City(String name, Region region) {
         this.name = name;
+        this.region = region;
     }
 
     public int getId() {
@@ -24,12 +47,12 @@ public class City {
         this.id = id;
     }
 
-    public int getRegionId() {
-        return regionId;
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 
     public String getName() {
@@ -40,11 +63,35 @@ public class City {
         this.name = name;
     }
 
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Set<AmusementPark> getAmusementParks() {
+        return amusementParks;
+    }
+
+    public void setAmusementParks(Set<AmusementPark> amusementParks) {
+        this.amusementParks = amusementParks;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
+
     @Override
     public String toString() {
         return "City{" +
                 "id=" + id +
-                ", regionId=" + regionId +
+                ", regionId=" + region.getId() +
                 ", name='" + name + '\'' +
                 '}';
     }

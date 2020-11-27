@@ -1,31 +1,53 @@
 package ua.lviv.iot.model.entity;
 
-public class Client {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String birthday;
-    private String gender;
-    private String address;
-    private int cityId;
+import javax.persistence.*;
+import java.util.Set;
 
-    public Client(int id, String firstName, String lastName, String birthday, String gender, String address, int cityId) {
+@Table(name = "client")
+@Entity
+public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "birthday")
+    private String birthday;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "address")
+    private String address;
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
+    private City city;
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<Ticket> tickets;
+
+    public Client(int id, String firstName, String lastName, String birthday, String gender, String address, City city, Set<Ticket> tickets) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.gender = gender;
         this.address = address;
-        this.cityId = cityId;
+        this.city = city;
+        this.tickets = tickets;
     }
 
-    public Client(String firstName, String lastName, String birthday, String gender, String address, int cityId) {
+    public Client(String firstName, String lastName, String birthday, String gender, String address, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.gender = gender;
         this.address = address;
-        this.cityId = cityId;
+        this.city = city;
+    }
+
+    public Client() {
+
     }
 
     public int getId() {
@@ -76,12 +98,20 @@ public class Client {
         this.address = address;
     }
 
-    public int getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override
@@ -93,7 +123,7 @@ public class Client {
                 ", birthday='" + birthday + '\'' +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
-                ", cityId=" + cityId +
+                ", cityId=" + city.getId() +
                 '}';
     }
 }

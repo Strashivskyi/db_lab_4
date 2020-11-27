@@ -9,9 +9,12 @@ import java.util.List;
 public class AttractionController implements AbstractGenericController<Attraction> {
     AttractionDaoImpl dao = new AttractionDaoImpl();
 
+    public AttractionController() throws SQLException {
+    }
+
     @Override
     public List<Attraction> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Attraction>) dao.findAll();
     }
 
     @Override

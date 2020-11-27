@@ -1,29 +1,43 @@
 package ua.lviv.iot.model.entity;
 
+import javax.persistence.*;
+
+@Table(name = "attraction")
+@Entity
 public class Attraction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "capacity")
     private int capacity;
-    private int amusementParkId;
+    @Column(name = "minimum_age")
     private int minimumAge;
+    @ManyToOne
+    @JoinColumn(name = "amusement_park_id", referencedColumnName = "id", nullable = false)
+    private AmusementPark amusementPark;
 
-    public Attraction(int id, String name, String description, int capacity, int amusementParkId, int minimumAge) {
+    public Attraction(int id, String name, String description, int capacity, int minimumAge, AmusementPark amusementPark) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.capacity = capacity;
-        this.amusementParkId = amusementParkId;
-        this.minimumAge = minimumAge;
+
     }
 
-    public Attraction(String name, String description, int capacity, int amusementParkId, int minimumAge) {
+    public Attraction() {
+
+    }
+
+    public Attraction(String name, String description, Integer capacity, AmusementPark amusementPark, Integer minimumAge) {
         this.name = name;
         this.description = description;
         this.capacity = capacity;
-        this.amusementParkId = amusementParkId;
         this.minimumAge = minimumAge;
+        this.amusementPark = amusementPark;
     }
+
 
     public int getId() {
         return id;
@@ -65,12 +79,12 @@ public class Attraction {
         this.minimumAge = minimumAge;
     }
 
-    public int getAmusementParkId() {
-        return amusementParkId;
+    public AmusementPark getAmusementPark() {
+        return amusementPark;
     }
 
-    public void setAmusementParkId(int amusementParkId) {
-        this.amusementParkId = amusementParkId;
+    public void setAmusementPark(AmusementPark amusementPark) {
+        this.amusementPark = amusementPark;
     }
 
     @Override
@@ -80,7 +94,6 @@ public class Attraction {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", capacity=" + capacity +
-                ", amusementParkId=" + amusementParkId +
                 ", minimumAge=" + minimumAge +
                 '}';
     }

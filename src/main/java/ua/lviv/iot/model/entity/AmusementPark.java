@@ -1,25 +1,51 @@
 package ua.lviv.iot.model.entity;
 
-public class AmusementPark {
-    private int id;
-    private int capacity;
-    private String address;
-    private String name;
-    private int cityId;
+import javax.persistence.*;
+import java.util.Set;
 
-    public AmusementPark(int id, int capacity, String address, String name, int cityId) {
-        this.id = id;
+@Table(name = "amusement_park")
+@Entity
+public class AmusementPark {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "capacity")
+    private int capacity;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "name")
+    private String name;
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
+    private City city;
+    @OneToMany(mappedBy = "amusementPark", fetch = FetchType.EAGER)
+    private Set<Attraction> attractions;
+    @OneToMany(mappedBy = "amusementPark", fetch = FetchType.EAGER)
+    private Set<Employee> employees;
+    @OneToMany(mappedBy = "amusementPark", fetch = FetchType.EAGER)
+    private Set<Ticket> tickets;
+
+    public AmusementPark(int capacity, String address, String name, City city, Set<Attraction> attractions, Set<Employee> employees, Set<Ticket> tickets) {
         this.capacity = capacity;
         this.address = address;
         this.name = name;
-        this.cityId = cityId;
+        this.city = city;
+        this.attractions = attractions;
+        this.employees = employees;
+        this.tickets = tickets;
     }
 
-    public AmusementPark(int capacity, String address, String name, int cityId) {
+    public AmusementPark(int capacity, String address, String name, City city) {
         this.capacity = capacity;
         this.address = address;
         this.name = name;
-        this.cityId = cityId;
+        this.city = city;
+    }
+
+
+    public AmusementPark() {
+
     }
 
     public int getId() {
@@ -30,12 +56,12 @@ public class AmusementPark {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public String getAddress() {
@@ -46,20 +72,44 @@ public class AmusementPark {
         this.address = address;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getName() {
+        return name;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public Set<Attraction> getAttractions() {
+        return attractions;
+    }
+
+    public void setAttractions(Set<Attraction> attractions) {
+        this.attractions = attractions;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override
@@ -69,7 +119,6 @@ public class AmusementPark {
                 ", capacity=" + capacity +
                 ", address='" + address + '\'' +
                 ", name='" + name + '\'' +
-                ", cityId=" + cityId +
                 '}';
     }
 }

@@ -9,9 +9,12 @@ import java.util.List;
 public class AmusementParkController implements AbstractGenericController<AmusementPark> {
     AmusementParkDaoImpl dao = new AmusementParkDaoImpl();
 
+    public AmusementParkController() throws SQLException {
+    }
+
     @Override
     public List<AmusementPark> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<AmusementPark>) dao.findAll();
     }
 
     @Override
@@ -34,4 +37,5 @@ public class AmusementParkController implements AbstractGenericController<Amusem
         dao.delete(id);
 
     }
+
 }

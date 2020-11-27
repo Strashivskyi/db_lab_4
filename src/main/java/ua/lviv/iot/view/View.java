@@ -24,7 +24,7 @@ public class View {
 
     private final Map<String, Printable> menu = new LinkedHashMap<>();
 
-    public View() {
+    public View() throws SQLException {
         menu.put("11", this::getAllAmusementParks);
         menu.put("12", this::getAmusementParkById);
         menu.put("13", this::createAmusementPark);
@@ -100,7 +100,7 @@ public class View {
         System.out.println(amusementParkController.findOne(id) + "\n");
     }
 
-    private AmusementPark getAmusementParkInputs() {
+    private AmusementPark getAmusementParkInputs() throws SQLException {
         System.out.println("Enter capacity: ");
         Integer capacity = SCANNER.nextInt();
         System.out.println("Enter address: ");
@@ -109,8 +109,14 @@ public class View {
         String name = SCANNER.next();
         System.out.println("Enter city id: ");
         Integer cityId = SCANNER.nextInt();
+        City city = cityController.findOne(cityId);
+        return new AmusementPark(capacity, adress, name, city);
+    }
 
-        return new AmusementPark(capacity, adress, name, cityId);
+    private void getSomeCityById() throws SQLException {
+        System.out.println("\nGETting City... Enter ID: ");
+        Integer id = SCANNER.nextInt();
+        System.out.println(cityController.findOne(id) + "\n");
     }
 
     private void createAmusementPark() throws SQLException {
@@ -151,18 +157,19 @@ public class View {
         System.out.println(attractionController.findOne(id) + "\n");
     }
 
-    private Attraction getAttractionInputs() {
+    private Attraction getAttractionInputs() throws SQLException {
         System.out.println("\nEnter name: ");
         String name = SCANNER.next();
         System.out.println("\nEnter description: ");
         String description = SCANNER.next();
         System.out.println("\nEnter capacity in person number: ");
         Integer capacity = SCANNER.nextInt();
-        System.out.println("\nEnter id of the amusement park: ");
-        Integer amusementParkId = SCANNER.nextInt();
         System.out.println("\nEnter minimum age: ");
         Integer minimumAge = SCANNER.nextInt();
-        return new Attraction(name, description, capacity, amusementParkId, minimumAge);
+        System.out.println("\nEnter id of the amusement park: ");
+        Integer amusementParkId = SCANNER.nextInt();
+        AmusementPark amusementPark = amusementParkController.findOne(amusementParkId);
+        return new Attraction(name, description, capacity, amusementPark, minimumAge);
     }
 
     private void createAttraction() throws SQLException {
@@ -203,13 +210,14 @@ public class View {
         System.out.println(attractionController.findOne(id) + "\n");
     }
 
-    private City getCityInputs() {
+    private City getCityInputs() throws SQLException {
         System.out.println("\nEnter name: ");
         String name = SCANNER.next();
         System.out.println("\nEnter region id: ");
         Integer regionId = SCANNER.nextInt();
+        Region region = regionController.findOne(regionId);
 
-        return new City(regionId, name);
+        return new City(name, region);
     }
 
     private void createCity() throws SQLException {
@@ -249,7 +257,7 @@ public class View {
         System.out.println(clientController.findOne(id) + "\n");
     }
 
-    private Client getClientInputs() {
+    private Client getClientInputs() throws SQLException {
         System.out.println("\nEnter first name: ");
         String firstName = SCANNER.next();
         System.out.println("\nEnter last name: ");
@@ -262,9 +270,10 @@ public class View {
         String gender = SCANNER.next();
         System.out.println("\nEnter city id: ");
         Integer cityId = SCANNER.nextInt();
+        City city = cityController.findOne(cityId);
 
 
-        return new Client(firstName, lastName, birthday, address, gender, cityId);
+        return new Client(firstName, lastName, birthday, address, gender, city);
     }
 
     private void createClient() throws SQLException {
@@ -396,7 +405,7 @@ public class View {
         System.out.println(employeeController.findOne(id) + "\n");
     }
 
-    private Employee getEmployeeInputs() {
+    private Employee getEmployeeInputs() throws SQLException {
         System.out.println("\nEnter phone number: ");
         String phoneNumber = SCANNER.next();
         System.out.println("\nEnter email: ");
@@ -407,16 +416,19 @@ public class View {
         String gender = SCANNER.next();
         System.out.println("\nEnter position id: ");
         Integer positionId = SCANNER.nextInt();
+        Position position = positionController.findOne(positionId);
         System.out.println("Enter first name: ");
         String firstName = SCANNER.next();
         System.out.println("Enter last name: ");
         String lastName = SCANNER.next();
         System.out.println("Enter city id: ");
         Integer cityId = SCANNER.nextInt();
+        City city= cityController.findOne(cityId);
         System.out.println("Enter amusement park id: ");
         Integer amusementParkId = SCANNER.nextInt();
+        AmusementPark amusementPark = amusementParkController.findOne(cityId);
 
-        return new Employee(phoneNumber, email, birthday, gender, positionId, firstName, lastName, cityId, amusementParkId);
+        return new Employee(phoneNumber, email, birthday, gender, position, firstName, lastName, city, amusementPark);
     }
 
     private void createEmployee() throws SQLException {
@@ -456,7 +468,7 @@ public class View {
         System.out.println(ticketController.findOne(id) + "\n");
     }
 
-    private Ticket getTicketInputs() {
+    private Ticket getTicketInputs() throws SQLException {
         System.out.println("\nEnter arrival time: ");
         String arrivalTime = SCANNER.next();
         System.out.println("\nEnter departure time: ");
@@ -467,14 +479,15 @@ public class View {
         Integer kidsNumber = SCANNER.nextInt();
         System.out.println("\nEnter price: ");
         Integer priceInUSD = SCANNER.nextInt();
-        System.out.println("Enter client id: ");
-        Integer clientId = SCANNER.nextInt();
         System.out.println("Enter amusement park id: ");
         Integer amusementParkId = SCANNER.nextInt();
+        AmusementPark amusementPark = amusementParkController.findOne(amusementParkId);
+        System.out.println("Enter client id: ");
+        Integer clientId = SCANNER.nextInt();
+        Client client = clientController.findOne(clientId);
         System.out.println("Enter payment time: ");
         String paymentTime = SCANNER.next();
-
-        return new Ticket(arrivalTime, departureTime, peopleNumber, kidsNumber, priceInUSD, clientId, amusementParkId, paymentTime);
+        return new Ticket(arrivalTime, departureTime, peopleNumber, kidsNumber, priceInUSD, paymentTime, amusementPark , client);
     }
 
     private void createTicket() throws SQLException {

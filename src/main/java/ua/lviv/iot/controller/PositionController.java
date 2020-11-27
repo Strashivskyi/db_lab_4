@@ -9,9 +9,12 @@ import java.util.List;
 public class PositionController implements AbstractGenericController<Position> {
     PositionDaoImpl dao = new PositionDaoImpl();
 
+    public PositionController() throws SQLException {
+    }
+
     @Override
     public List<Position> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Position>) dao.findAll();
     }
 
     @Override

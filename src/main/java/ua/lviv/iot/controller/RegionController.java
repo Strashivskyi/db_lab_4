@@ -9,9 +9,12 @@ import java.util.List;
 public class RegionController implements AbstractGenericController<Region> {
     RegionDaoImpl dao = new RegionDaoImpl();
 
+    public RegionController() throws SQLException {
+    }
+
     @Override
     public List<Region> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Region>) dao.findAll();
     }
 
     @Override

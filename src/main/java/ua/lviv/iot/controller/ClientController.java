@@ -9,9 +9,12 @@ import java.util.List;
 public class ClientController implements AbstractGenericController<Client> {
     ClientDaoImpl dao = new ClientDaoImpl();
 
+    public ClientController() throws SQLException {
+    }
+
     @Override
     public List<Client> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Client>) dao.findAll();
     }
 
     @Override

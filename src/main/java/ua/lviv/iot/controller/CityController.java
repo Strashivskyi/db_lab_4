@@ -9,9 +9,12 @@ import java.util.List;
 public class CityController implements AbstractGenericController<City> {
     CityDaoImpl dao = new CityDaoImpl();
 
+    public CityController() throws SQLException {
+    }
+
     @Override
     public List<City> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<City>) dao.findAll();
     }
 
     @Override

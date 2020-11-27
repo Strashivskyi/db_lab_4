@@ -9,9 +9,12 @@ import java.util.List;
 public class EmployeeController implements AbstractGenericController<Employee> {
     EmployeeDaoImpl dao = new EmployeeDaoImpl();
 
+    public EmployeeController() throws SQLException {
+    }
+
     @Override
     public List<Employee> findAll() throws SQLException {
-        return dao.findAll();
+        return (List<Employee>) dao.findAll();
     }
 
     @Override

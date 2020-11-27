@@ -2,9 +2,9 @@ package ua.lviv.iot.view;
 
 public class Menu {
     public void displayMenu() {
-        System.out.println("=======================================================================");
+        System.out.println("////////////////////////////////////////////////////////////////////////");
         System.out.println("                 Enter your XY to choose the option, where:");
-        System.out.println("=======================================================================");
+        System.out.println("////////////////////////////////////////////////////////////////////////");
         System.out.println("  X - entity number:               |         Y - CRUD number:");
         System.out.println("  1 - amusement park               |         1 - GET ALL");
         System.out.println("  2 - attraction                   |         2 - GET ONE");

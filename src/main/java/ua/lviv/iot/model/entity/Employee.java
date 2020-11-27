@@ -1,40 +1,64 @@
 package ua.lviv.iot.model.entity;
 
-public class Employee {
-    private int id;
-    private String phoneNumber;
-    private String email;
-    private String birthday;
-    private String gender;
-    private int positionId;
-    private String firstName;
-    private String lastName;
-    private int cityId;
-    private int amusementParkId;
+import javax.persistence.*;
+import java.util.Set;
 
-    public Employee(int id, String phoneNumber, String email, String birthday, String gender, int positionId, String firstName, String lastName, int cityId, int amusementParkId) {
+@Table(name = "employee")
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "birthday")
+    private String birthday;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @ManyToOne
+    @JoinColumn(name = "position_id", referencedColumnName = "id", nullable = false)
+    private Position position;
+    @ManyToOne
+    @JoinColumn(name = "amusement_park_id", referencedColumnName = "id", nullable = false)
+    private AmusementPark amusementPark;
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
+    private City city;
+
+    public Employee(int id, String phoneNumber, String email, String birthday, String gender, String firstName, String lastName, Position position, AmusementPark amusementPark, City city) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.birthday = birthday;
         this.gender = gender;
-        this.positionId = positionId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.cityId = cityId;
-        this.amusementParkId = amusementParkId;
+        this.position = position;
+        this.amusementPark = amusementPark;
+        this.city = city;
     }
 
-    public Employee(String phoneNumber, String email, String birthday, String gender, int positionId, String firstName, String lastName, int cityId, int amusementParkId) {
+    public Employee() {
+
+    }
+
+    public Employee(String phoneNumber, String email, String birthday, String gender, Position position, String firstName, String lastName, City city, AmusementPark amusementPark) {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.birthday = birthday;
         this.gender = gender;
-        this.positionId = positionId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.cityId = cityId;
-        this.amusementParkId = amusementParkId;
+        this.position = position;
+        this.amusementPark = amusementPark;
+        this.city = city;
     }
 
     public int getId() {
@@ -77,14 +101,6 @@ public class Employee {
         this.gender = gender;
     }
 
-    public int getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -101,20 +117,28 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public int getCityId() {
-        return cityId;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
-    public int getAmusementParkId() {
-        return amusementParkId;
+    public AmusementPark getAmusementPark() {
+        return amusementPark;
     }
 
-    public void setAmusementParkId(int amusementParkId) {
-        this.amusementParkId = amusementParkId;
+    public void setAmusementPark(AmusementPark amusementPark) {
+        this.amusementPark = amusementPark;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
@@ -125,11 +149,11 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", gender='" + gender + '\'' +
-                ", positionId=" + positionId +
+                ", positionId=" + position.getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", cityId=" + cityId +
-                ", amusementParkId=" + amusementParkId +
+                ", cityId=" + city.getId() +
+                ", amusementParkId=" + amusementPark.getId() +
                 '}';
     }
 }

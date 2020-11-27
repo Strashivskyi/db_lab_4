@@ -1,16 +1,36 @@
 package ua.lviv.iot.model.entity;
 
-public class Region {
-    private int id;
-    private String name;
+import javax.persistence.*;
+import java.util.Set;
 
+@Table(name = "region")
+@Entity
+public class Region {
+    @Id
+    @Column(name = "id")
+    private int id;
+    @Column(name = "name")
+    private String name;
+    @OneToMany(mappedBy = "region", fetch = FetchType.EAGER)
+    private Set<City> cities;
+
+    public Region(String name) {
+        this.name = name;
+    }
     public Region(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Region(String name) {
+    public Region(int id, String name, Set<City> cities) {
+        this.id = id;
         this.name = name;
+        this.cities = cities;
+    }
+
+
+    public Region() {
+
     }
 
     public int getId() {
